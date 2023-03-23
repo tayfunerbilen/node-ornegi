@@ -1,0 +1,20 @@
+<h1>Kayit ol</h1>
+
+<% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+    <div style="background-color: red; padding: 5px; color: #fff">
+        <% for (let error of errors) { %>
+            <%=error.msg%> <br>
+        <% } %>
+    </div>
+<% } %>
+
+<form action="/auth/register" enctype="multipart/form-data" method="post">
+    <input type="text" name="username" placeholder="Kullanici adi"
+           value="<%= typeof formData !== 'undefined' ? formData.username : '' %>"> <br>
+    <input type="email" name="email" placeholder="E-posta"
+           value="<%= typeof formData !== 'undefined' ? formData.email : '' %>"> <br>
+    <input type="password" name="password" placeholder="Parola"> <br>
+    <input type="password" name="passwordConfirmation" placeholder="Parola (Tekrar)"> <br>
+    <input type="file" name="avatar"> <br>
+    <button type="submit">Kayit ol</button>
+</form>

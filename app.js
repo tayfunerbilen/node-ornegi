@@ -1,6 +1,7 @@
 import express from "express"
 import dotenv from "dotenv"
 import session from "express-session"
+import fileUpload from "express-fileupload"
 
 import auth from "./routes/auth.js";
 
@@ -13,6 +14,15 @@ app.set('view engine', 'ejs')
 app.use(express.urlencoded({
 	extended: true
 }))
+app.use('/assets', express.static('assets'))
+app.use('/upload', express.static('upload'))
+app.use(
+	fileUpload({
+		// safeFileNames: true,
+		//preserveExtension: true,
+		useTempFiles: true
+	})
+)
 app.use(
 	session({
 		secret: process.env.SESSION_KEY,
