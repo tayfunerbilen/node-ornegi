@@ -19,6 +19,7 @@
     "express-fileupload": "^1.4.0",
     "express-session": "^1.17.3",
     "express-validator": "^6.15.0",
+    "mysql2": "^3.2.0",
     "slugify": "^1.6.5"
   }
 }

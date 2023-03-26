@@ -1,5 +1,6 @@
 import {validationResult} from "express-validator";
 import slugify from "slugify";
+import User from "../models/user.js";
 
 export const getRegisterController = (req, res) => {
 	res.render('auth/register')
@@ -9,7 +10,7 @@ export const getLoginController = (req, res) => {
 	res.render('auth/login')
 }
 
-export const postLoginController = (req, res) => {
+export const postLoginController = async (req, res) => {
 	const {username, password} = req.body
 	res.locals.formData = req.body
 	let error
@@ -17,18 +18,25 @@ export const postLoginController = (req, res) => {
 		error = 'kullanici adi bos olamaz'
 	} else if (!password) {
 		error = 'Parola bos olamaz'
-	} else if (username !== 'tayfun' || password !== '123') {
-		error = 'Kullanici adi ya da parola dogru degil'
 	} else {
 
-		req.session.username = username
-		res.redirect('/')
+		const user = await User.login(username, password)
+		if (user) {
+			req.session.username = user.username
+			req.session.user_id = user.id
+			res.redirect('/')
+		} else {
+			error = 'Bu bilgilere ait kullanici bulunamadi!'
+		}
 
 	}
 
-	res.render('auth/login', {
-		error
-	})
+	if (error) {
+		res.render('auth/login', {
+			error
+		})
+	}
+
 }
 
 export const postRegisterController = (req, res) => {
@@ -54,18 +62,32 @@ export const postRegisterController = (req, res) => {
 			strict: true
 		}) + '.' + fileExtension;
 
-		avatar.mv(path, err => {
+		avatar.mv(path, async err => {
 			if (err) {
 				return res.status(500).send(err);
 			}
-			console.log('KAYIT BASARILI!!!')
+
+			// model yapisi
+			const response = await User.create({
+				email: req.body.email,
+				password: req.body.password,
+				username: req.body.username,
+				avatar: path
+			})
+			const user = await User.findById(response.insertId)
+
+			req.session.username = user.username
+			req.session.user_id = user.id
+			res.redirect('/')
+
 		})
 
+	} else {
+		res.render('auth/register', {
+			errors: errors.array()
+		})
 	}
 
-	res.render('auth/register', {
-		errors: errors.array()
-	})
 }
 
 export const logoutController = (req, res) => {

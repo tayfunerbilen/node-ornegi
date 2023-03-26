@@ -1,4 +1,5 @@
 import {body, check} from "express-validator";
+import User from "../models/user.js";
 
 export const registerValidation = () => [
 
@@ -10,7 +11,14 @@ export const registerValidation = () => [
 
 	body('email')
 		.isEmail()
-		.withMessage('Geçerli bir e-posta adresi girin.'),
+		.withMessage('Geçerli bir e-posta adresi girin.')
+		.custom(value => {
+			return User.findByEmail(value).then(user => {
+				if (user) {
+					return Promise.reject('E-posta zaten kullaniliyor!');
+				}
+			})
+		}),
 
 	body('password')
 		.isLength({ min: 6 })

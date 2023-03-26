@@ -5,18 +5,18 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><%=title%></title>
+    <title><%= title %></title>
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 
-<h3><%=greeting%></h3>
-
 <% if (session.username) { %>
-    <a href="/auth/logout">Cikis yap</a>
+<h3>Hosgeldin, <%= session.username %> (<%=session.user_id%>)</h3>
+<a href="/auth/logout">Cikis yap</a>
 <% } else { %>
-    <a href="/auth/login">Giris yap</a>
-    <a href="/auth/register">Kayit ol</a>
+<h3><%= greeting %></h3>
+<a href="/auth/login">Giris yap</a>
+<a href="/auth/register">Kayit ol</a>
 <% } %>
 
 </body>

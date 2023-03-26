@@ -1,11 +1,12 @@
+import "dotenv/config"
 import express from "express"
-import dotenv from "dotenv"
 import session from "express-session"
 import fileUpload from "express-fileupload"
+import db from "./db.js";
 
 import auth from "./routes/auth.js";
 
-dotenv.config()
+// dotenv.config()
 
 const app = express()
 const port = process.env.PORT || 3002
