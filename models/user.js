@@ -1,4 +1,5 @@
 import pool from "../db.js";
+import {sqlLogger} from "../utils/logger.js";
 
 class User {
 	static async create(data) {
@@ -16,6 +17,10 @@ class User {
 	static async findById(id) {
 		const connection = await pool.getConnection()
 		try {
+			sqlLogger.info({
+				query: 'SELECT * FROM users WHERE id = :id',
+				params: {id}
+			})
 			const [rows] = await connection.execute('SELECT * FROM users WHERE id = :id', {id})
 			return rows[0]
 		} catch (e) {
@@ -28,6 +33,10 @@ class User {
 	static async findByEmail(email) {
 		const connection = await pool.getConnection()
 		try {
+			sqlLogger.info({
+				query: 'SELECT * FROM users WHERE email = :email',
+				params: {email}
+			})
 			const [rows] = await connection.execute('SELECT * FROM users WHERE email = :email', {email})
 			return rows[0]
 		} catch (e) {
@@ -40,6 +49,10 @@ class User {
 	static async login(username, password) {
 		const connection = await pool.getConnection()
 		try {
+			sqlLogger.info({
+				query: 'SELECT * FROM users WHERE username = :username && password = :password',
+				params: {username, password}
+			})
 			const [rows] = await connection.execute('SELECT * FROM users WHERE username = :username && password = :password', {username, password})
 			return rows[0]
 		} catch (e) {

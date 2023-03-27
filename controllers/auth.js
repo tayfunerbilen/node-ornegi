@@ -1,6 +1,7 @@
 import {validationResult} from "express-validator";
 import slugify from "slugify";
 import User from "../models/user.js";
+import {decrypt, encrypt} from "../utils/crypto.js";
 
 export const getRegisterController = (req, res) => {
 	res.render('auth/register')
@@ -10,7 +11,7 @@ export const getLoginController = (req, res) => {
 	res.render('auth/login')
 }
 
-export const postLoginController = async (req, res) => {
+export const postLoginController = async (req, res, next) => {
 	const {username, password} = req.body
 	res.locals.formData = req.body
 	let error
@@ -20,13 +21,17 @@ export const postLoginController = async (req, res) => {
 		error = 'Parola bos olamaz'
 	} else {
 
-		const user = await User.login(username, password)
-		if (user) {
-			req.session.username = user.username
-			req.session.user_id = user.id
-			res.redirect('/')
-		} else {
-			error = 'Bu bilgilere ait kullanici bulunamadi!'
+		try {
+			const user = await User.login(username, password)
+			if (user) {
+				req.session.username = user.username
+				req.session.user_id = encrypt(String(user.id))
+				res.redirect('/')
+			} else {
+				error = 'Bu bilgilere ait kullanici bulunamadi!'
+			}
+		} catch (err) {
+			next(err)
 		}
 
 	}

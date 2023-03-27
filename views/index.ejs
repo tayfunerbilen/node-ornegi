@@ -11,7 +11,7 @@
 <body>
 
 <% if (session.username) { %>
-<h3>Hosgeldin, <%= session.username %> (<%=session.user_id%>)</h3>
+<h3>Hosgeldin, <%= session.username %> (<%=decrypt(session.user_id)%>)</h3>
 <a href="/auth/logout">Cikis yap</a>
 <% } else { %>
 <h3><%= greeting %></h3>

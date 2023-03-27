@@ -1,12 +1,10 @@
-import "dotenv/config"
+import "./utils/env.js"
 import express from "express"
 import session from "express-session"
 import fileUpload from "express-fileupload"
-import db from "./db.js";
-
 import auth from "./routes/auth.js";
-
-// dotenv.config()
+import {decrypt} from "./utils/crypto.js";
+import {logger} from "./utils/logger.js";
 
 const app = express()
 const port = process.env.PORT || 3002
@@ -34,6 +32,7 @@ app.use(
 
 app.use((req, res, next) => {
 	res.locals.session = req.session
+	res.locals.decrypt = decrypt
 	next()
 })
 
@@ -45,5 +44,17 @@ app.get('/', (req, res) => {
 })
 
 app.use('/auth', auth)
+
+app.use((err, req, res, next) => {
+
+	logger.error(`${req.method} ${req.url} - ${err.message}`, {
+		timestamp: new Date(),
+		stack: err.stack,
+	});
+
+	res.status(500).send('Bir hata meydana geldi!')
+
+	//next()
+})
 
 app.listen(port, () => console.log(`http://localhost:${port} portundan dinleniyor`))

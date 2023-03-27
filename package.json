@@ -6,13 +6,15 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js",
+    "dev": "NODE_ENV=development nodemon app.js",
+    "prod": "NODE_ENV=production node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
@@ -20,6 +22,7 @@
     "express-session": "^1.17.3",
     "express-validator": "^6.15.0",
     "mysql2": "^3.2.0",
-    "slugify": "^1.6.5"
+    "slugify": "^1.6.5",
+    "winston": "^3.8.2"
   }
 }

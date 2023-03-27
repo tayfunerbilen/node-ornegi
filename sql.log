@@ -1,0 +1,5 @@
+{"level":"info","message":"MySQL query: SELECT * FROM users WHERE username = :username && password = :password - Params: {\"username\":\"tayfunerbilen\",\"password\":\"123123\"}","timestamp":"2023-03-27T17:23:42.057Z"}
+{"level":"info","message":"MySQL query: SELECT * FROM users WHERE email = :email - Params: {\"email\":\"tayfunerbilen@gmail.com\"}","timestamp":"2023-03-27T17:24:13.880Z"}
+{"level":"info","message":{"params":{"password":"123123","username":"tayfunerbilen"},"query":"SELECT * FROM users WHERE username = :username && password = :password"},"timestamp":"2023-03-27T17:25:43.157Z"}
+{"level":"info","message":{"params":{"password":"123123","username":"prototurk"},"query":"SELECT * FROM users WHERE username = :username && password = :password"},"timestamp":"2023-03-27T17:26:42.960Z"}
+{"level":"info","message":{"params":{"password":"123123","username":"tayfunerbilen"},"query":"SELECT * FROM users WHERE username = :username && password = :password"},"timestamp":"2023-03-27T17:29:04.301Z"}
